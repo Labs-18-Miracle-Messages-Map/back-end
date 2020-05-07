@@ -46,6 +46,7 @@ server.use("/api/chapter", chaptersRouter);
 server.use("/api/partner", partnerRouter);
 server.use("/api/form", formRouter);
 server.use("/api/user", userRouter);
+server.use("/api/volunteers", volunteersRouter);
 
 /**************************************/
 /*      Custom Middleware             */
