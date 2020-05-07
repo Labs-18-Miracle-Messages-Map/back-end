@@ -10,7 +10,7 @@ const router = express.Router();
 /*                    New  user registration by an admin                    */
 /****************************************************************************/
 
-router.post("/register", restricted, async (req, res) => {
+router.post("/register", async (req, res) => {
   try {
     let user = req.body;
     const hash = bcrypt.hashSync(user.password, 10);
@@ -35,18 +35,18 @@ router.post("/login", (req, res) => {
 
   Users.findBy({ username })
     .first()
-    .then(user => {
+    .then((user) => {
       if (user && bcrypt.compareSync(password, user.password)) {
         const token = generateToken(user);
         res.status(200).json({
           message: `Welcome ${user.username}!`,
-          token
+          token,
         });
       } else {
         res.status(401).json({ message: "Invalid Credentials" });
       }
     })
-    .catch(error => {
+    .catch((error) => {
       console.log(error);
       res.status(500).json(error);
     });
@@ -58,10 +58,10 @@ router.post("/login", (req, res) => {
 
 router.get("/users", restricted, (req, res) => {
   Users.find()
-    .then(users => {
+    .then((users) => {
       res.json(users);
     })
-    .catch(err => console.log(err));
+    .catch((err) => console.log(err));
 });
 
 /****************************************************************************/
@@ -71,11 +71,11 @@ router.get("/users", restricted, (req, res) => {
 function generateToken(user) {
   const payload = {
     subject: user.id,
-    username: user.username
+    username: user.username,
   };
 
   const options = {
-    expiresIn: "1d"
+    expiresIn: "1d",
   };
   return jwt.sign(payload, secrets.jwtSecret, options);
 }
